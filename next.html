@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>You & Me 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Zeyada&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      touch-action: none;
+    }
+
+    body {
+      margin: 0;
+      background: #fff5f7 url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    .paper {
+      background: #fff;
+      padding: 25px 40px;
+      position: absolute;
+      max-width: 85vw;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      font-family: 'Zeyada', cursive;
+      font-size: 34px;
+      color: #444;
+      transform-origin: center center;
+      transition: box-shadow 0.3s;
+    }
+
+    .paper:hover {
+      box-shadow: 0 14px 30px rgba(0,0,0,0.2);
+    }
+
+    .paper:nth-child(odd) { transform: rotate(-3deg); }
+    .paper:nth-child(even) { transform: rotate(3deg); }
+
+    .paper.photo {
+      padding: 10px;
+    }
+
+    .paper.photo img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      display: block;
+      margin: auto;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      width: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d88;
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #e6005c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Draggable Lovely Notes -->
+  <div class="paper">You're the smile I never want to lose 💫</div>
+  <div class="paper">Every day with you is my favorite day 🥰</div>
+  <div class="paper">In your eyes, I found my forever 💖</div>
+  <div class="paper">You’re not just my person, you're my peace ❤️</div>
+  <div class="paper photo">
+    <img src="https://i.pinimg.com/originals/ff/02/55/ff0255a1d9cc83f91e9c91d98ddba8db.jpg" alt="Cute Couple">
+  </div>
+  <div class="paper">Drag me around — like how I carry you in my heart 😊</div>
+
+  <!-- Back Button -->
+  <div class="footer">
+    <a href="main.html" class="btn">Back to Start</a>
+  </div>
+    
+
+  <!-- JS: Drag Interaction -->
+  <script>
+    let highestZ = 1;
+
+    class Paper {
+      constructor(paper) {
+        this.paper = paper;
+        this.holding = false;
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.paperX = 0;
+        this.paperY = 0;
+        this.prevX = 0;
+        this.prevY = 0;
+        this.rotation = Math.random() * 10 - 5;
+
+        this.init();
+      }
+
+      init() {
+        document.addEventListener('mousemove', (e) => this.move(e.clientX, e.clientY));
+        this.paper.addEventListener('mousedown', (e) => this.start(e.clientX, e.clientY));
+        window.addEventListener('mouseup', () => this.end());
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            const t = e.touches[0];
+            this.move(t.clientX, t.clientY);
+          }
+        }, { passive: false });
+
+        this.paper.addEventListener('touchstart', (e) => {
+          if (e.touches.length > 0) {
+            const t = e.touches[0];
+            this.start(t.clientX, t.clientY);
+          }
+        });
+
+        this.paper.addEventListener('touchend', () => this.end());
+      }
+
+      move(x, y) {
+        if (!this.holding) return;
+        const dx = x - this.prevX;
+        const dy = y - this.prevY;
+        this.paperX += dx;
+        this.paperY += dy;
+        this.prevX = x;
+        this.prevY = y;
+
+        this.paper.style.transform = `translate(${this.paperX}px, ${this.paperY}px) rotate(${this.rotation}deg)`;
+      }
+
+      start(x, y) {
+        this.holding = true;
+        this.paper.style.zIndex = highestZ++;
+        this.prevX = x;
+        this.prevY = y;
+      }
+
+      end() {
+        this.holding = false;
+      }
+    }
+
+    document.querySelectorAll('.paper').forEach(p => new Paper(p));
+  </script>
+
+</body>
+</html>
