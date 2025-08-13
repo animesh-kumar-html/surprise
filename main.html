@@ -38,6 +38,8 @@
       max-width: 520px;
       z-index: 2;
       animation: fadeIn 1.5s ease-in;
+      position: relative;
+      overflow: hidden;
     }
 
     @keyframes fadeIn {
@@ -103,6 +105,8 @@
       color: #333;
       position: absolute;
       transition: transform 0.3s ease;
+      top: 0;
+      right: 0;
     }
     .no:hover { background: #ccc; }
 
@@ -184,17 +188,17 @@
 
   <div class="floating-hearts" id="hearts"></div>
 
-  <div class="container">
+  <div class="container" id="container">
     <div class="heart">❤️</div>
     <h1>Will You Be My Girlfriend?</h1>
     <p>
       In the garden of my heart, you've bloomed like the rarest rose.<br>
       Today, I gather all my courage just to ask you this —<br><strong>Will you be mine?</strong>
     </p>
-    <div class="buttons" id="buttonContainer">
+    <div class="buttons">
       <button class="yes" id="yesBtn" onclick="sayYes()">Yes 💖</button>
-      <button class="no" id="noBtn" onclick="sayNo()">No 😢</button>
     </div>
+    <button class="no" id="noBtn" onclick="sayNo()">No 😢</button>
     <div class="response" id="response"></div>
     <button class="music-control" onclick="toggleMusic()" id="musicBtn">▶️ Play Song</button>
   </div>
@@ -213,7 +217,7 @@
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const responseDiv = document.getElementById("response");
-    const buttonContainer = document.getElementById("buttonContainer");
+    const container = document.getElementById("container");
 
     let noClicks = 0;
 
@@ -250,11 +254,12 @@
     }
 
     function moveNoButton() {
-      const containerWidth = buttonContainer.offsetWidth - noBtn.offsetWidth;
-      const containerHeight = buttonContainer.offsetHeight - noBtn.offsetHeight;
+      const containerWidth = container.offsetWidth - noBtn.offsetWidth;
+      const containerHeight = container.offsetHeight - noBtn.offsetHeight;
       const randomX = Math.floor(Math.random() * containerWidth);
       const randomY = Math.floor(Math.random() * containerHeight);
-      noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
     }
 
     function createHeart() {
@@ -282,6 +287,9 @@
     }
     music.addEventListener('play', updateMusicButton);
     music.addEventListener('pause', updateMusicButton);
+
+    // Start "No" button in a random spot right away
+    moveNoButton();
   </script>
 </body>
 </html>
