@@ -105,8 +105,6 @@
       color: #333;
       position: absolute;
       transition: transform 0.3s ease;
-      top: 0;
-      right: 0;
     }
     .no:hover { background: #ccc; }
 
@@ -243,12 +241,15 @@
 
     function sayNo() {
       noClicks++;
-      moveNoButton();
       if (noClicks >= 3) {
-        responseDiv.innerText = "Hah! You can't escape love 😘";
-      } else {
-        responseDiv.innerText = `Clicked "No" ${noClicks} time(s)... 💔`;
+        noBtn.remove();
+        responseDiv.innerText = "No more running away 😏 Now only 'Yes' remains!";
+        responseDiv.style.color = "#ff6b81";
+        responseDiv.style.display = "block";
+        return;
       }
+      moveNoButton();
+      responseDiv.innerText = `Clicked "No" ${noClicks} time(s)... 💔`;
       responseDiv.style.display = "block";
       responseDiv.style.color = "#dc3545";
     }
