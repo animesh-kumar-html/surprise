@@ -242,25 +242,36 @@
     let noClicks = 0;
 
    function sayYes() {
+  // Get elements
+  const responseDiv = document.getElementById("responseDiv");
+  const yesBtn = document.getElementById("yesBtn");
+  const music = document.getElementById("music");
+
+  // Set text and style
   responseDiv.innerText = "Yay! 💘 You just made my heart dance!";
   responseDiv.style.display = "block";
   responseDiv.style.color = "#28a745";
 
-  const glow = document.createElement('div');
-  glow.className = 'celebrate';
+  // Glow animation
+  const glow = document.createElement("div");
+  glow.className = "celebrate";
   yesBtn.appendChild(glow);
   setTimeout(() => glow.remove(), 3000);
 
-  if (music.paused) {
+  // Play music if not playing
+  if (music && music.paused) {
     music.play().catch(() => {});
-    updateMusicButton();
+    if (typeof updateMusicButton === "function") {
+      updateMusicButton();
+    }
   }
 
-  // Wait 3 seconds, then redirect to second page
+  // Redirect after 3 seconds
   setTimeout(() => {
     window.location.href = "iloveyou.html";
   }, 3000);
 }
+
 
     function sayNo() {
       noClicks++;
